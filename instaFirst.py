@@ -3,7 +3,7 @@ from time import sleep
 
 
 class Instagram:
-    def __init__(self, userName="trollmonst3r", usrPwd="m6nrUfwC9yEfzrR", targetUser="thefootballtroll", dwnldPath="/ home/null_byt3/Desktop/instagram"):
+    def __init__(self, userName="trollmonst3r", usrPwd="m6nrUfwC9yEfzrR", targetUser="trollfootballhq", dwnldPath="/ home/null_byt3/Desktop/instagram"):
         self.username = userName
         self.userpassword = usrPwd
         self.targetuser = targetUser
@@ -15,6 +15,7 @@ class Instagram:
         self.logIn()
         self.popupNotify()
         self.searchTarget()
+        self.scrollToInsta()
         input('stop')
         self.driver.close()
 
@@ -47,6 +48,21 @@ class Instagram:
         targetUserURL = self.baseURL+self.targetuser+'/'
         self.driver.get(targetUserURL)
         sleep(3)
+
+    def scrollToInsta(self):
+        numberofPosts = self.driver.find_element_by_xpath(
+            "//span[@class='g47SY ']")
+        numberofPosts = str(numberofPosts.text)
+        self.numberofPosts = int(numberofPosts)
+
+        if self.numberofPosts > 24:
+            noOfScrolls = int(self.numberofPosts/24) + 3
+
+            for allScrolls in range(noOfScrolls):
+                print(allScrolls)
+                self.driver.execute_script(
+                    "window.scrollTo(0, document.body.scrollHeight);")
+                sleep(1)
 
 
 if __name__ == "__main__":
