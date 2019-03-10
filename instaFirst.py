@@ -11,11 +11,9 @@ class Instagram:
         self.driver = webdriver.Chrome("./chromedriver")
         self.url = "https://www.instagram.com/accounts/login/"
         self.driver.get(self.url)
-        sleep(3)
         self.logIn()
         self.popupNotify()
         input('stop')
-        sleep(3)
         self.driver.close()
 
     def logIn(self):
@@ -33,7 +31,7 @@ class Instagram:
         try:
             sleep(2)
             notnowBtn = self.driver.find_element_by_xpath(
-                "//button[contains('Not Now')]")
+                "//button[contains(.,'Not Now')]")
             # HoLwm
             notnowBtn.click()
             sleep(2)
