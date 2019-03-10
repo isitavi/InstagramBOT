@@ -9,10 +9,12 @@ class Instagram:
         self.targetuser = targetUser
         self.downloadpath = dwnldPath
         self.driver = webdriver.Chrome("./chromedriver")
-        self.url = "https://www.instagram.com/accounts/login/"
-        self.driver.get(self.url)
+        self.loginurl = "https://www.instagram.com/accounts/login/"
+        self.baseURL = "https://www.instagram.com/"
+        self.driver.get(self.loginurl)
         self.logIn()
         self.popupNotify()
+        self.searchTarget()
         input('stop')
         self.driver.close()
 
@@ -37,6 +39,14 @@ class Instagram:
             sleep(2)
         except Exception:
             pass
+
+    def searchTarget(self):
+        searchBox = self.driver.find_element_by_xpath(
+            "//input[@placeholder='Search']")
+        searchBox.send_keys(self.targetuser)
+        targetUserURL = self.baseURL+self.targetuser+'/'
+        self.driver.get(targetUserURL)
+        sleep(3)
 
 
 if __name__ == "__main__":
