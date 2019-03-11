@@ -61,19 +61,23 @@ class Instagram:
             print('Something wrong while finding username')
 
     def scrollToInsta(self):
-        numberofPosts = self.driver.find_element_by_xpath(
-            "//span[@class='g47SY ']")
-        numberofPosts = str(numberofPosts.text)
-        self.numberofPosts = int(numberofPosts)
+        try:
+            numberofPosts = self.driver.find_element_by_xpath(
+                "//span[@class='g47SY ']")
+            numberofPosts = str(numberofPosts.text)
+            self.numberofPosts = int(numberofPosts)
 
-        if self.numberofPosts > 24:
-            noOfScrolls = int(self.numberofPosts/24) + 3
+            if self.numberofPosts > 24:
+                noOfScrolls = int(self.numberofPosts/24) + 3
 
-            for allScrolls in range(noOfScrolls):
-                print(allScrolls)
-                self.driver.execute_script(
-                    "window.scrollTo(0, document.body.scrollHeight);")
-                sleep(1)
+                for allScrolls in range(noOfScrolls):
+                    print(allScrolls)
+                    self.driver.execute_script(
+                        "window.scrollTo(0, document.body.scrollHeight);")
+                    sleep(1)
+        except Exception:
+            self.error = True
+            print('Something wrong happend while scrolling all posts')
 
 
 if __name__ == "__main__":
