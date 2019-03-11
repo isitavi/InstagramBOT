@@ -1,14 +1,23 @@
+import os
 from selenium import webdriver
 from time import sleep
 
 
 class Instagram:
-    def __init__(self, userName="trollmonst3r", usrPwd="m6nrUfwC9yEfzrR", targetUser="trollfootballhq", dwnldPath="/ home/null_byt3/Desktop/instagram"):
+    def __init__(self, userName="trollmonst3r", usrPwd="m6nrUfwC9yEfzrR", targetUser="trollfootballhq", dwnldPath="/home/null_byt3/Desktop/instagram"):
+        self.error = False
+        if self.error is False:
+            if os.path.exists(dwnldPath):
+                print('Download path already exists!!')
+            else:
+                os.mkdir(dwnldPath)
+        else:
+            print('Something wrong plese debug your code!!')
+
         self.username = userName
         self.userpassword = usrPwd
         self.targetuser = targetUser
         self.downloadpath = dwnldPath
-        self.error = False
         self.driver = webdriver.Chrome("./chromedriver")
         self.loginurl = "https://www.instagram.com/accounts/login/"
         self.baseURL = "https://www.instagram.com/"
