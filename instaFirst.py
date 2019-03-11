@@ -1,11 +1,13 @@
 import os
+import requests
+import shutil
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from time import sleep
 
 
 class Instagram:
-    def __init__(self, userName="trollmonst3r", usrPwd="m6nrUfwC9yEfzrR", targetUser="trollfootballhq", dwnldPath="/home/null_byt3/Desktop/instagram"):
+    def __init__(self, userName="trollmonst3r", usrPwd="m6nrUfwC9yEfzrR", targetUser="dataminer2060", dwnldPath="/home/null_byt3/Desktop/instagram"):
         self.error = False
         if self.error is False:
             if os.path.exists(dwnldPath):
@@ -77,12 +79,13 @@ class Instagram:
                 "//span[@class='g47SY ']")
             numberofPosts = str(numberofPosts.text)
             self.numberofPosts = int(numberofPosts)
+            print('Total number of posts: ', self.numberofPosts)
 
-            if self.numberofPosts > 24:
-                noOfScrolls = int(self.numberofPosts/24) + 3
+            if self.numberofPosts > 12:
+                noOfScrolls = int(self.numberofPosts/12) + 3
 
                 for allScrolls in range(noOfScrolls):
-                    print(allScrolls)
+                    print('Total number of scrolls: ', allScrolls)
                     self.driver.execute_script(
                         "window.scrollTo(0, document.body.scrollHeight);")
                     sleep(1)
@@ -94,8 +97,19 @@ class Instagram:
         soup = BeautifulSoup(self.driver.page_source, 'lxml')
         allImage = soup.find_all('img')
         print('Length of all images: ', len(allImage))
-        for image in allImage:
-            print(image['src'])
+        for index, image in enumerate(allImage):
+            fileName = 'troll'+str(index)+'.jpg'
+            imagePath = os.path.join(self.downloadpath, fileName)
+            link = image['src']
+            response = requests.get(link, stream=True)
+            print('Downloading image: ', index)
+            try:
+                with open(imagePath, 'wb') as imageFile:
+                    shutil.copyfileobj(response.raw, imageFile)
+            except Exception as wrong:
+                print(wrong)
+                print('Something wrong while downloading images', index)
+                print('Something wrong while downloading images', link)
 
 
 if __name__ == "__main__":
