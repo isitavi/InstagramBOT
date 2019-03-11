@@ -1,4 +1,5 @@
 import os
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from time import sleep
 
@@ -26,7 +27,8 @@ class Instagram:
         self.popupNotify()
         self.searchTarget()
         self.scrollToInsta()
-        input('stop')
+        self.downloadImage()
+        # input('stop')
         self.driver.close()
 
     def logIn(self):
@@ -87,6 +89,13 @@ class Instagram:
         except Exception:
             self.error = True
             print('Something wrong happend while scrolling all posts')
+
+    def downloadImage(self):
+        soup = BeautifulSoup(self.driver.page_source, 'lxml')
+        allImage = soup.find_all('img')
+        print('Length of all images: ', len(allImage))
+        for image in allImage:
+            print(image['src'])
 
 
 if __name__ == "__main__":
