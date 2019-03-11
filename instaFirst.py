@@ -8,7 +8,7 @@ from xlsxwriter import Workbook
 
 
 class Instagram:
-    def __init__(self, userName="trollmonst3r", usrPwd="m6nrUfwC9yEfzrR", targetUser="dataminer2060", dwnldPath="/home/null_byt3/Desktop/instagram"):
+    def __init__(self, userName="yourInstagramUsername", usrPwd="yourInstagramPassword", targetUser="TargetInstagramUserName", dwnldPath="/home/null_byt3/Desktop/instagram"):
         self.error = False
         if self.error is False:
             if os.path.exists(dwnldPath):
