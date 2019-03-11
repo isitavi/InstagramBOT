@@ -126,8 +126,8 @@ class Instagram:
                 captionsFolderPath, captionFileName)
             link = image['src']
             with open(captionFilePath, 'wb') as captionFile:
-                captionFile.write('link: ' + str(link) +
-                                  "\n" + 'caption: '+caption)
+                captionFile.write(str('link: ' + str(link) +
+                                      "\n" + 'caption: '+caption).encode())
 
 
 if __name__ == "__main__":
