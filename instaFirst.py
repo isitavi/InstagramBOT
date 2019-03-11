@@ -4,6 +4,7 @@ import shutil
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from time import sleep
+from xlsxwriter import Workbook
 
 
 class Instagram:
@@ -116,18 +117,35 @@ class Instagram:
         captionsFolderPath = os.path.join(self.downloadpath, 'captions')
         if not os.path.exists(captionsFolderPath):
             os.mkdir(captionsFolderPath)
+        self.captionsToExcel(images, captionsFolderPath)
+        # for index, image in enumerate(images):
+        #     try:
+        #         caption = image['alt']
+        #     except KeyError:
+        #         print('No caption found')
+        #     captionFileName = 'caption-'+str(index)+'.txt'
+        #     captionFilePath = os.path.join(
+        #         captionsFolderPath, captionFileName)
+        #     link = image['src']
+        #     with open(captionFilePath, 'wb') as captionFile:
+        #         captionFile.write(str('link: ' + str(link) +
+        #                               "\n" + 'caption: '+caption).encode())
+
+    def captionsToExcel(self, images, captionPath):
+        workbook = Workbook(os.path.join(captionPath, 'caption.xls'))
+        worksheet = workbook.add_worksheet()
+        row = 0
         for index, image in enumerate(images):
+            worksheet.write(row, 0,  'Image Name')
+            worksheet.write(row, 1, 'Caption')
+            fileName = 'troll'+str(index)+'.jpg'
             try:
                 caption = image['alt']
             except KeyError:
-                print('No caption found')
-            captionFileName = 'caption-'+str(index)+'.txt'
-            captionFilePath = os.path.join(
-                captionsFolderPath, captionFileName)
-            link = image['src']
-            with open(captionFilePath, 'wb') as captionFile:
-                captionFile.write(str('link: ' + str(link) +
-                                      "\n" + 'caption: '+caption).encode())
+                caption = 'No caption found'
+            worksheet.write(row, 0, fileName)
+            worksheet.write(row, 1, caption)
+            row += 1
 
 
 if __name__ == "__main__":
