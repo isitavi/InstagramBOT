@@ -96,6 +96,7 @@ class Instagram:
     def downloadImage(self):
         soup = BeautifulSoup(self.driver.page_source, 'lxml')
         allImage = soup.find_all('img')
+        self.allCaptions(allImage)
         print('Length of all images: ', len(allImage))
         for index, image in enumerate(allImage):
             fileName = 'troll'+str(index)+'.jpg'
@@ -110,6 +111,23 @@ class Instagram:
                 print(wrong)
                 print('Something wrong while downloading images', index)
                 print('Something wrong while downloading images', link)
+
+    def allCaptions(self, images):
+        captionsFolderPath = os.path.join(self.downloadpath, 'captions')
+        if not os.path.exists(captionsFolderPath):
+            os.mkdir(captionsFolderPath)
+        for index, image in enumerate(images):
+            try:
+                caption = image['alt']
+            except KeyError:
+                print('No caption found')
+            captionFileName = 'caption-'+str(index)+'.txt'
+            captionFilePath = os.path.join(
+                captionsFolderPath, captionFileName)
+            link = image['src']
+            with open(captionFilePath, 'wb') as captionFile:
+                captionFile.write('link: ' + str(link) +
+                                  "\n" + 'caption: '+caption)
 
 
 if __name__ == "__main__":
