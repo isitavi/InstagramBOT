@@ -8,6 +8,7 @@ class Instagram:
         self.userpassword = usrPwd
         self.targetuser = targetUser
         self.downloadpath = dwnldPath
+        self.error = False
         self.driver = webdriver.Chrome("./chromedriver")
         self.loginurl = "https://www.instagram.com/accounts/login/"
         self.baseURL = "https://www.instagram.com/"
@@ -20,34 +21,44 @@ class Instagram:
         self.driver.close()
 
     def logIn(self):
-        loginBtn = self.driver.find_element_by_xpath(
-            "//button[contains(.,'Log in')]")
-        usernameField = self.driver.find_element_by_xpath(
-            "//input[@name='username'][@type='text']")
-        usernameField.send_keys(self.username)
-        passwordField = self.driver.find_element_by_xpath(
-            "//input[@name='password'][@type='password']")
-        passwordField.send_keys(self.userpassword)
-        loginBtn.click()
+        try:
+            loginBtn = self.driver.find_element_by_xpath(
+                "//button[contains(.,'Log in')]")
+            try:
+                usernameField = self.driver.find_element_by_xpath(
+                    "//input[@name='username'][@type='text']")
+                usernameField.send_keys(self.username)
+                passwordField = self.driver.find_element_by_xpath(
+                    "//input[@name='password'][@type='password']")
+                passwordField.send_keys(self.userpassword)
+                loginBtn.click()
+            except Exception:
+                print('Something wrong while inserting username and password')
+        except Exception:
+            self.error = True
+            print('Something wrong')
 
     def popupNotify(self):
         try:
             sleep(2)
             notnowBtn = self.driver.find_element_by_xpath(
                 "//button[contains(.,'Not Now')]")
-            # HoLwm
             notnowBtn.click()
             sleep(2)
         except Exception:
             pass
 
     def searchTarget(self):
-        searchBox = self.driver.find_element_by_xpath(
-            "//input[@placeholder='Search']")
-        searchBox.send_keys(self.targetuser)
-        targetUserURL = self.baseURL+self.targetuser+'/'
-        self.driver.get(targetUserURL)
-        sleep(3)
+        try:
+            searchBox = self.driver.find_element_by_xpath(
+                "//input[@placeholder='Search']")
+            searchBox.send_keys(self.targetuser)
+            targetUserURL = self.baseURL+self.targetuser+'/'
+            self.driver.get(targetUserURL)
+            sleep(3)
+        except Exception:
+            self.error = True
+            print('Something wrong while finding username')
 
     def scrollToInsta(self):
         numberofPosts = self.driver.find_element_by_xpath(
